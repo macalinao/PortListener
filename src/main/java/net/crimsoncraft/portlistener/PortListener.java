@@ -33,5 +33,9 @@ public class PortListener extends JavaPlugin {
     public void onEnable() {
         getLogger().log(Level.INFO, "Plugin enabled.");
     }
+
+    public String getRequestKey(String referer) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
     
 }

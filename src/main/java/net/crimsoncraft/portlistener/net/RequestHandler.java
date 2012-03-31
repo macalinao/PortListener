@@ -1,25 +1,41 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * This file is part of PortListener.
+ *
+ * PortListener is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PortListener is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with PortListener.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.crimsoncraft.portlistener.net;
 
-import com.crimsonrpg.pvpranker.CrimsonPvP;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.logging.Level;
+import net.crimsoncraft.portlistener.PortListener;
+import net.crimsoncraft.portlistener.api.PortReceiveEvent;
+import org.bukkit.Bukkit;
 
 /**
- *
- * @author simplyianm
+ * Thread for handling requests.
  */
 public class RequestHandler extends Thread {
+    private final PortListener plugin;
+
     private Socket socket;
 
-    public RequestHandler(Socket socket) {
+    public RequestHandler(PortListener plugin, Socket socket) {
+        this.plugin = plugin;
         this.socket = socket;
     }
 
@@ -35,7 +51,7 @@ public class RequestHandler extends Thread {
             socket.close();
         } catch (IOException ignored) {
         } catch (Exception ex) {
-            CrimsonPvP.log(Level.SEVERE, "Uh oh! Something unexpected happened.", ex);
+            plugin.getLogger().log(Level.SEVERE, "Uh oh! Something unexpected happened.", ex);
         }
     }
 
@@ -54,19 +70,20 @@ public class RequestHandler extends Thread {
             return false;
         }
 
-        String id = parts[0];
-        String name = parts[1];
-        String pass = parts[2];
+        String referer = parts[0];
+        String key = parts[1];
+        String content = parts[2];
 
-        if (!pass.equals("234nu89cuc2u")) {
+        if (referer.isEmpty()) {
             return false;
         }
 
-        if (!id.equals("1")) {
+        if (!key.equals(plugin.getRequestKey(referer))) {
             return false;
         }
 
-        CrimsonPvP.getInstance().getVoteHandler().addVoter(name);
+        PortReceiveEvent event = new PortReceiveEvent(referer, key, content);
+        Bukkit.getPluginManager().callEvent(event);
 
         return true;
     }
