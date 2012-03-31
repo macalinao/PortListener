@@ -16,6 +16,7 @@
  */
 package net.crimsoncraft.portlistener.net;
 
+import com.google.common.base.Joiner;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -72,7 +73,11 @@ public class RequestHandler extends Thread {
 
         String referer = parts[0];
         String key = parts[1];
-        String content = parts[2];
+        StringBuilder contentBuilder = new StringBuilder(parts[2]);
+        for (int i = 2; i < parts.length; i++) {
+            contentBuilder.append(";" + parts[i]);
+        }
+        String content = contentBuilder.toString();
 
         if (referer.isEmpty()) {
             return false;
