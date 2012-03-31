@@ -26,7 +26,7 @@ import net.crimsoncraft.portlistener.PortListener;
 /**
  * Listens to incoming messages.
  */
-public class ListeningServer extends Thread {
+public class PortServer extends Thread {
     private final PortListener plugin;
 
     private String host;
@@ -35,13 +35,19 @@ public class ListeningServer extends Thread {
 
     private ServerSocket listener;
 
-    public ListeningServer(PortListener plugin, String host, int port) {
+    public PortServer(PortListener plugin, String host, int port) {
         this.plugin = plugin;
         this.host = host;
         this.port = port;
     }
+    
+    @Override
+    public void start() {
+        startListener();
+        super.start();
+    }
 
-    public void startListener() {
+    private void startListener() {
         // Initialize the listener.
         InetSocketAddress address;
         if (host.equalsIgnoreCase("ANY") || host.equalsIgnoreCase("0.0.0.0")) {

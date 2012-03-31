@@ -17,13 +17,15 @@
 package net.crimsoncraft.portlistener;
 
 import java.util.logging.Level;
+import net.crimsoncraft.portlistener.net.PortServer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * PortListener main class.
  */
 public class PortListener extends JavaPlugin {
-
+    private PortServer server;
+    
     @Override
     public void onDisable() {
         getLogger().log(Level.INFO, "Plugin disabled.");
@@ -31,6 +33,8 @@ public class PortListener extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        server = new PortServer(this, "0.0.0.0", 10099);
+        server.start();
         getLogger().log(Level.INFO, "Plugin enabled.");
     }
 
