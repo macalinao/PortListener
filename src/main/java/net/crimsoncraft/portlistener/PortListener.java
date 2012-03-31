@@ -25,7 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class PortListener extends JavaPlugin {
     private PortServer server;
-    
+
     @Override
     public void onDisable() {
         getLogger().log(Level.INFO, "Plugin disabled.");
@@ -33,13 +33,21 @@ public class PortListener extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        server = new PortServer(this, "0.0.0.0", 10099);
+        int port = getConfig().getInt("server.port", 10099);
+        
+        server = new PortServer(this, "0.0.0.0", port);
         server.start();
         getLogger().log(Level.INFO, "Plugin enabled.");
     }
 
+    /**
+     * Gets the Request Key of a referer.
+     *
+     * @param referer The referer.
+     * @return The request key of the referer.
+     */
     public String getRequestKey(String referer) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return getConfig().getString("referers." + referer, "");
     }
-    
+
 }
