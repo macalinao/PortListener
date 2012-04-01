@@ -10,7 +10,7 @@
 
     <name>PortListener</name>
     <url>http://crimsoncraft.net</url>
-    <description>PortListener is a plu</description>
+    <description>PortListener is a plgin that fires an event when it receives data from a port.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

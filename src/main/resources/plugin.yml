@@ -1,0 +1,7 @@
+name: ${project.name}
+description: ${project.description}
+version: ${project.version}
+author: AlbireoX
+website: ${project.url}
+
+main: ${project.groupId}.${project.artifactId}.${project.name}
