@@ -73,11 +73,7 @@ public class RequestHandler extends Thread {
 
         String referer = parts[0];
         String key = parts[1];
-        StringBuilder contentBuilder = new StringBuilder(parts[2]);
-        for (int i = 2; i < parts.length; i++) {
-            contentBuilder.append(";" + parts[i]);
-        }
-        String content = contentBuilder.toString();
+        String content = parts[2];
 
         if (referer.isEmpty()) {
             return false;
